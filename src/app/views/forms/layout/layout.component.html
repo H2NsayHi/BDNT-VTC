@@ -1,0 +1,76 @@
+<c-row>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>TRA CỨU KẾT QUẢ</strong>
+      </c-card-header>
+      <c-card-body>
+        <form cForm class="row g-3">
+          <!-- First Row with 5 Information Fields -->
+          <c-col md="3">  
+            <select cSelect id="inputField1">
+              <option value="" disabled selected>Loại hạ tầng mạng lưới</option>
+              <option *ngFor="let option of options['Loại hạ tầng mạng lưới']">{{ option }}</option>
+            </select>
+          </c-col>
+          <c-col md="3">
+            <select cSelect id="inputField2">
+              <option value="" disabled selected>Đối tượng hạ tầng mạng lưới</option>
+              <option *ngFor="let option of options['Đối tượng hạ tầng mạng lưới']">{{ option }}</option>
+            </select>
+          </c-col>
+          <c-col md="3">
+            <select cSelect id="inputField3">
+              <option value="" disabled selected>Đối tượng ảnh chụp</option>
+              <option *ngFor="let option of options['Đối tượng ảnh chụp']">{{ option }}</option>
+            </select>
+          </c-col>
+          <c-col md="3">
+            <select cSelect id="inputField4">
+              <option value="" disabled selected>Đầu việc</option>
+              <option *ngFor="let option of options['Đầu việc']">{{ option }}</option>
+            </select>
+          </c-col>
+          <c-col md="2">
+            <select cSelect id="inputField5">
+              <option value="" disabled selected>Mã trạm</option>
+              <option *ngFor="let option of options['Mã trạm']">{{ option }}</option>
+            </select>
+          </c-col>
+
+          <!-- Second Row with 3 Information Fields -->
+          <c-col md="2">
+            <select cSelect id="inputField6">
+              <option value="" disabled selected>Khoảng thời gian</option>
+              <option>1 tháng - nay</option>
+              <option>3 tháng - nay</option>
+              <option>6 tháng - nay</option>
+              <option>1 năm - nay</option>
+            </select>
+          </c-col>
+          <c-col md="2">
+            <select cSelect id="inputField7">
+              <option value="" disabled selected>Kết quả</option>
+              <option>Tốt</option>
+              <option>Phát hiện lỗi</option>
+            </select>
+          </c-col>
+
+          <c-col md="2">
+            <label for="inputField8" class="form-label">Độ chính xác</label>
+            <div class="input-group">
+              <span class="input-group-text">≥</span>
+              <input type="number" id="inputField8" class="form-control" min="0" max="100" placeholder=" " />
+              <span class="input-group-text">%</span>
+            </div>
+          </c-col>
+
+          <!-- Last Column for Submit Button -->
+          <c-col md="3">
+            <button cButton type="button" (click)="onSubmit($event)">Xuất báo cáo</button>
+          </c-col>          
+        </form>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

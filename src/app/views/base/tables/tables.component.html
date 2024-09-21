@@ -1,0 +1,101 @@
+<c-row ngPreserveWhitespaces class="justify-content-center mb-3">
+  <c-col xs="2">
+    <select class="form-control" [(ngModel)]="inputField1">
+      <option value="" disabled selected>Loại HTML</option>
+      <option value="option1">Option 1</option>
+      <option value="option2">Option 2</option>
+      <option value="option3">Option 3</option>
+    </select>
+  </c-col>
+
+  <c-col xs="2">
+    <select class="form-control" [(ngModel)]="inputField2">
+      <option value="" disabled selected>Đối tượng HTML</option>
+      <option value="option1">Option 1</option>
+      <option value="option2">Option 2</option>
+      <option value="option3">Option 3</option>
+    </select>
+  </c-col>
+
+  <c-col xs="2">
+    <select class="form-control" [(ngModel)]="inputField3">
+      <option value="" disabled selected>Đối tượng ảnh chụp</option>
+      <option value="option1">Option 1</option>
+      <option value="option2">Option 2</option>
+      <option value="option3">Option 3</option>
+    </select>
+  </c-col>
+
+  <c-col xs="2">
+    <select class="form-control" [(ngModel)]="inputField4">
+      <option value="" disabled selected>Đầu việc</option>
+      <option value="option1">Option 1</option>
+      <option value="option2">Option 2</option>
+      <option value="option3">Option 3</option>
+    </select>
+  </c-col>
+
+  <c-col xs="2">
+    <select class="form-control" [(ngModel)]="inputField5">
+      <option value="" disabled selected>Mã trạm</option>
+      <option value="option1">Option 1</option>
+      <option value="option2">Option 2</option>
+      <option value="option3">Option 3</option>
+    </select>
+  </c-col>
+</c-row>
+
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-body>
+        <table [striped]="true" cTable>
+          <thead>
+            <tr>
+              <th scope="col">Số thứ tự</th>
+              <th scope="col">Loại HTML</th>
+              <th scope="col">Đối tượng HTML</th>
+              <th scope="col">Đối tượng ảnh chụp</th>
+              <th scope="col">Đầu việc</th>
+              <th scope="col">Mã trạm</th>
+              <th scope="col">Khoảng thời gian</th>
+              <th scope="col">Kết quả</th>
+              <th scope="col">Độ chính xác</th>
+              <th scope="col">Ảnh</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of dataset; let i = index">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>{{ item.loaiHTML }}</td>
+              <td>{{ item.doiTuongHTML }}</td>
+              <td>{{ item.doiTuongAnh }}</td>
+              <td>{{ item.dauViec }}</td>
+              <td>{{ item.maTram }}</td>
+              <td>{{ item.khoangThoiGian }}</td>
+              <td>{{ item.ketQua }}</td>
+              <td>{{ item.doChinhXac }}</td>
+              <td>
+                <a [routerLink]="['/base/cards']" [queryParams]="{
+                  loaiHTML: item.loaiHTML,
+                  doiTuongHTML: item.doiTuongHTML,
+                  doiTuongAnh: item.doiTuongAnh,
+                  dauViec: item.dauViec,
+                  ketQua: item.ketQua,
+                  doChinhXac: item.doChinhXac,
+                  khoangThoiGian: item.khoangThoiGian,
+                  imagePaths: item.anh.join(',')
+                }">
+                  <img src="assets/images/image_icon.png" alt="Image Icon" width="30" height="30" />
+                </a>
+              </td>              
+            </tr>
+          </tbody>
+        </table>
+      </c-card-body>
+    </c-card>
+  </c-col>
+  <c-col xs="12" class="text-end">
+    <button class="btn btn-primary" (click)="exportReport()">Xuất báo cáo</button>
+  </c-col>
+</c-row>

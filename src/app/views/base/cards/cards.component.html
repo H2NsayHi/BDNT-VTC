@@ -1,0 +1,26 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="4">
+    <c-card class="mb-4">
+      <c-card-body>
+        <p><strong>Loại HTML:</strong> {{ loaiHTML }}</p>
+        <p><strong>Đối tượng HTML:</strong> {{ doiTuongHTML }}</p>
+        <p><strong>Đối tượng ảnh chụp:</strong> {{ doiTuongAnh }}</p>
+        <p><strong>Đầu việc:</strong> {{ dauViec }}</p>
+        <p><strong>Kết quả:</strong> {{ ketQua }}</p>
+        <p><strong>Độ chính xác:</strong> {{ doChinhXac }}</p>
+        <p><strong>Thời gian chụp:</strong> {{ khoangThoiGian }}</p>
+      </c-card-body>
+    </c-card>
+  </c-col>
+  <c-col xs="8">
+    <c-card class="mb-4">
+      <c-card-body>
+        <c-row>
+          <c-col *ngFor="let imgPath of imagePaths" xs="4" class="mb-3">
+            <img [src]="imgPath" alt="Image" style="width: 100%; height: auto;" />
+          </c-col>
+        </c-row>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
