@@ -49,53 +49,38 @@
   <c-col xs="12">
     <c-card class="mb-4">
       <c-card-body>
-        <table [striped]="true" cTable>
+        <table class="table">
           <thead>
             <tr>
-              <th scope="col">Số thứ tự</th>
-              <th scope="col">Loại HTML</th>
-              <th scope="col">Đối tượng HTML</th>
-              <th scope="col">Đối tượng ảnh chụp</th>
-              <th scope="col">Đầu việc</th>
-              <th scope="col">Mã trạm</th>
-              <th scope="col">Khoảng thời gian</th>
-              <th scope="col">Kết quả</th>
-              <th scope="col">Độ chính xác</th>
-              <th scope="col">Ảnh</th>
+              <th>Loại HTML</th>
+              <th>Đối tượng HTML</th>
+              <th>Đối tượng ảnh chụp</th>
+              <th>Đầu việc</th>
+              <th>Mã trạm</th>
+              <th>Kết quả</th>
+              <th>Độ chính xác</th>
+              <th>Ảnh</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of dataset; let i = index">
-              <th scope="row">{{ i + 1 }}</th>
-              <td>{{ item.loaiHTML }}</td>
-              <td>{{ item.doiTuongHTML }}</td>
-              <td>{{ item.doiTuongAnh }}</td>
-              <td>{{ item.dauViec }}</td>
-              <td>{{ item.maTram }}</td>
-              <td>{{ item.khoangThoiGian }}</td>
-              <td>{{ item.ketQua }}</td>
-              <td>{{ item.doChinhXac }}</td>
+            <tr *ngFor="let row of transformedData">
+              <td>{{ row.loaiHTML }}</td>
+              <td>{{ row.doiTuongHTML }}</td>
+              <td>{{ row.doiTuongAnh }}</td>
+              <td>{{ row.dauViec }}</td>
+              <td>{{ row.maTram }}</td>
+              <td>{{ row.ketQua }}</td>
+              <td>{{ row.doChinhXac }}</td>
               <td>
-                <a [routerLink]="['/base/cards']" [queryParams]="{
-                  loaiHTML: item.loaiHTML,
-                  doiTuongHTML: item.doiTuongHTML,
-                  doiTuongAnh: item.doiTuongAnh,
-                  dauViec: item.dauViec,
-                  ketQua: item.ketQua,
-                  doChinhXac: item.doChinhXac,
-                  khoangThoiGian: item.khoangThoiGian,
-                  imagePaths: item.anh.join(',')
-                }">
-                  <img src="assets/images/image_icon.png" alt="Image Icon" width="30" height="30" />
-                </a>
-              </td>              
+                <img *ngFor="let image of row.anh" [src]="image" (click)="onImageClick(row)" alt="Image" style="width: 50px; height: auto; cursor: pointer;">
+              </td>
             </tr>
           </tbody>
         </table>
+        
       </c-card-body>
     </c-card>
   </c-col>
   <c-col xs="12" class="text-end">
     <button class="btn btn-primary" (click)="exportReport()">Xuất báo cáo</button>
   </c-col>
-</c-row>

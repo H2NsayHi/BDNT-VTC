@@ -6,7 +6,9 @@ import { RowComponent, ColComponent, TextColorDirective, CardComponent, CardHead
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
+import { DataService } from '../../../data.service';
+
 
 @Component({
     selector: 'app-layout',
@@ -41,7 +43,7 @@ import { Router } from '@angular/router';
 export class LayoutComponent {
   
   APIURL = "http://localhost:8000/";
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private dataService: DataService) {}
 
   public List_HTML = { 
     html_type: [''], 
@@ -68,7 +70,7 @@ export class LayoutComponent {
     'Đầu việc': [''],
     'Mã trạm': ['']
   };
-
+  
   ngOnInit(): void {
     this.resetListHTML();
     forkJoin([
@@ -190,7 +192,8 @@ export class LayoutComponent {
   }
   onSubmit(event: Event) {
     event.preventDefault(); // Ngăn chặn gửi biểu mẫu mặc định
-    this.resetListHTML()
+    this.resetListHTML();
+    
     const inputField1 = (document.getElementById('inputField1') as HTMLSelectElement).value;
     const inputField2 = (document.getElementById('inputField2') as HTMLSelectElement).value;
     const inputField3 = (document.getElementById('inputField3') as HTMLSelectElement).value;
@@ -199,12 +202,6 @@ export class LayoutComponent {
     const inputField6 = (document.getElementById('inputField6') as HTMLSelectElement).value;
     const inputField7 = (document.getElementById('inputField7') as HTMLSelectElement).value;
     const inputField8 = (document.getElementById('inputField8') as HTMLInputElement).value;
-
-    // Kiểm tra các trường bắt buộc
-    if (!inputField1 || !inputField2 || !inputField3 || !inputField4 || !inputField5 || !inputField6 || !inputField7) {
-      alert("Vui lòng chọn tất cả các trường bắt buộc."); // Thông báo lỗi
-      return; // Dừng thực thi
-    }
 
     let dateRange: Date;
     const currentDate = new Date();
@@ -228,37 +225,39 @@ export class LayoutComponent {
     }
 
     let body = new FormData();
-    body.append("html_type", inputField1);
-    body.append("html_object", inputField2);
-    body.append("object_station", inputField3);
-    body.append("task_code", inputField4);
-    body.append("station_code", inputField5);
-    body.append("time", this.formatDate(dateRange)); // Định dạng ngày
-    body.append("result", inputField7 === 'Tốt' ? '1' : '0');
-    body.append("acc", inputField8);
+    body.append("html_type", inputField1 === '' ? 'isempty' : inputField1);
+    body.append("html_object", inputField2 === '' ? 'isempty' : inputField2);
+    body.append("object_station", inputField3 === '' ? 'isempty' : inputField3);
+    body.append("task_code", inputField4 === '' ? 'isempty' : inputField4);
+    body.append("station_code", inputField5 === '' ? 'isempty' : inputField5);
+    body.append("time", inputField6 === '' ? 'isempty' : this.formatDate(dateRange)); // Định dạng ngày
+    body.append("result", inputField7 === '' ? 'isempty' : (inputField7 === 'Tốt' ? '1' : '0'));
+    body.append("acc", inputField8 === '' ? 'isempty' : inputField8);
 
     this.query_all(body).subscribe((res: any) => {
       this.tasks_query_all = res.data;
+      this.refreshHTMLList(); // Update List_HTML
+      this.dataService.setData(this.List_HTML); // Set data in the service
+      console.log(this.List_HTML); // Log the List_HTML
     });
+
     this.router.navigate(['/base/tables']);
   }
-
   refreshHTMLList() {
-    
+    this.resetListHTML(); // Reset before populating
     this.tasks_query_all.forEach((task: any) => {
-      const { html_type, html_object, object_station, task_code, result, station_code, urls, confidence_score } = task;
-      this.List_HTML.html_type.push(html_type),
-      this.List_HTML.html_object.push(html_object),
-      this.List_HTML.object_station.push(object_station),
-      this.List_HTML.task_code.push(task_code),
-      this.List_HTML.result.push(result),
-      this.List_HTML.station_code.push(station_code),
-      this.List_HTML.confidence_score.push(confidence_score),
-      this.List_HTML.urls.push(urls)
-
-
+        const { html_type, html_object, object_station, task_code, result, station_code, urls, confidence_score } = task;
+        this.List_HTML.html_type.push(html_type);
+        this.List_HTML.html_object.push(html_object);
+        this.List_HTML.object_station.push(object_station);
+        this.List_HTML.task_code.push(task_code);
+        this.List_HTML.result.push(result);
+        this.List_HTML.station_code.push(station_code);
+        this.List_HTML.confidence_score.push(confidence_score);
+        this.List_HTML.urls.push(urls);
     });
-  }
+}
+
 
   query_all(body: FormData): Observable<any> {
     return this.http.post(this.APIURL + "query_all", body).pipe(
