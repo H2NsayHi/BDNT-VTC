@@ -1,10 +1,8 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core'; 
-import { DocsExampleComponent } from '@docs-components/public-api';
 import { RowComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent, TableDirective, TableColorDirective, TableActiveDirective, BorderDirective, AlignDirective } from '@coreui/angular';
 import { FormsModule } from '@angular/forms'; 
-import { RouterModule } from '@angular/router'; 
+import { RouterModule, Router } from '@angular/router'; 
 import { CommonModule } from '@angular/common'; 
-import { Router } from '@angular/router'; 
 import { LayoutComponent } from '../../forms/layout/layout.component';
 import { DataService } from '../../../data.service';
 
@@ -20,7 +18,6 @@ import { DataService } from '../../../data.service';
     CardComponent,
     CardHeaderComponent,
     CardBodyComponent,
-    DocsExampleComponent,
     TableDirective,
     TableColorDirective,
     TableActiveDirective,
@@ -40,15 +37,14 @@ export class TablesComponent implements AfterViewInit {
 
   @ViewChild(LayoutComponent, { static: false }) layoutComponent!: LayoutComponent; 
 
-  dataset: { [key: string]: any[] } = {}; // Change to an object type
+  dataset: { [key: string]: any[] } = {}; // Object type for dataset
   transformedData: any[] = []; // To hold the transformed data
-  displayedData: any;
 
   constructor(private router: Router, private dataService: DataService) { }
 
   ngAfterViewInit() {
-    this.displayedData = this.dataService.getData();
-    console.log(this.displayedData);
+    this.dataset = this.dataService.getData();
+    console.log("Original dataset:", this.dataset);
 
     // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
     setTimeout(() => {
@@ -57,21 +53,20 @@ export class TablesComponent implements AfterViewInit {
   }
 
   transformDataset(): void {
-    console.log("Original dataset:", this.displayedData); // Debug log
-    if (this.displayedData['html_type'] && Array.isArray(this.displayedData['html_type'])) {
-      this.transformedData = this.displayedData['html_type'].map((type, index) => ({
+    if (this.dataset['html_type'] && Array.isArray(this.dataset['html_type'])) {
+      this.transformedData = this.dataset['html_type'].map((type, index) => ({
         loaiHTML: type,
-        doiTuongHTML: this.displayedData['html_object'][index],
-        doiTuongAnh: this.displayedData['object_station'][index] || '',
-        dauViec: this.displayedData['task_code'][index],
-        maTram: this.displayedData['station_code'][index],
-        khoangThoiGian: '',
-        ketQua: this.displayedData['result'][index].toString(),
-        doChinhXac: this.displayedData['confidence_score'][index].toString(),
-        anh: this.parseJsonArray(this.displayedData['urls'][index]),
+        doiTuongHTML: this.dataset['html_object'][index],
+        doiTuongAnh: this.dataset['object_station'][index] || '',
+        dauViec: this.dataset['task_code'][index],
+        maTram: this.dataset['station_code'][index],
+        khoangThoiGian: '', // You can fill this if you have data
+        ketQua: this.dataset['result'][index].toString(),
+        doChinhXac: this.dataset['confidence_score'][index].toString(),
+        anh: this.parseJsonArray(this.dataset['urls'][index]), // Parsing URLs
       }));
     }
-    console.log("Transformed data:", this.transformedData); // Debug log
+    console.log("Transformed data:", this.transformedData);
   }
   
   private parseJsonArray(urlString: string): any[] {
@@ -84,16 +79,24 @@ export class TablesComponent implements AfterViewInit {
   }
 
   onImageClick(row: any): void {
-    const queryParams = { ...row };
-    delete queryParams.anh; // Optional
+    const queryParams = {
+      loaiHTML: row.loaiHTML,
+      doiTuongHTML: row.doiTuongHTML,
+      doiTuongAnh: row.doiTuongAnh,
+      dauViec: row.dauViec,
+      ketQua: row.ketQua,
+      doChinhXac: row.doChinhXac,
+      khoangThoiGian: row.khoangThoiGian,
+      imagePaths: row.anh.join(','),
+    };
 
+    // Navigate to the CardsComponent with the query parameters
     this.router.navigate(['/cards'], { queryParams });
   }
 
   exportReport() {
     console.log("Export report button clicked!");
-    console.log("Dataset to export:", this.transformedData); // Updated to reflect the current dataset
-
+    console.log("Dataset to export:", this.transformedData);
     // Implement export functionality here
   }
 }

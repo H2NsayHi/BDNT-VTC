@@ -14,11 +14,19 @@ describe('CardsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CardModule, NavModule, GridModule, ListGroupModule, UtilitiesModule, ButtonModule, CardsComponent, NoopAnimationsModule, ],
+      imports: [
+        CardModule,
+        NavModule,
+        GridModule,
+        ListGroupModule,
+        UtilitiesModule,
+        ButtonModule,
+        CardsComponent,
+        NoopAnimationsModule,
+      ],
       providers: [IconSetService, provideRouter([])],
-      teardown: { destroyAfterEach: false }   // <- add this line for Error: NG0205: Injector has already been destroyed.
-    })
-      .compileComponents();
+      teardown: { destroyAfterEach: false }
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -246,10 +246,10 @@ export class LayoutComponent {
   refreshHTMLList() {
     this.resetListHTML(); // Reset before populating
     this.tasks_query_all.forEach((task: any) => {
-        const { html_type, html_object, object_station, task_code, result, station_code, urls, confidence_score } = task;
+        const { html_type, html_object, object_station_name, task_code, result, station_code, urls, confidence_score } = task;
         this.List_HTML.html_type.push(html_type);
         this.List_HTML.html_object.push(html_object);
-        this.List_HTML.object_station.push(object_station);
+        this.List_HTML.object_station.push(object_station_name);
         this.List_HTML.task_code.push(task_code);
         this.List_HTML.result.push(result);
         this.List_HTML.station_code.push(station_code);

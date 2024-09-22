@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RowComponent, ColComponent, CardComponent, CardBodyComponent } from '@coreui/angular';
-import { CommonModule } from '@angular/common'; // Import CommonModule
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cards',
   templateUrl: './cards.component.html',
   styleUrls: ['./cards.component.scss'],
   standalone: true,
-  imports: [CommonModule, RowComponent, ColComponent, CardComponent, CardBodyComponent] // Add CommonModule here
+  imports: [CommonModule, RowComponent, ColComponent, CardComponent, CardBodyComponent]
 })
 export class CardsComponent {
   loaiHTML: string = '';
@@ -21,7 +21,6 @@ export class CardsComponent {
   imagePaths: string[] = [];
 
   constructor(private route: ActivatedRoute) {
-    // Get data from query parameters
     this.route.queryParams.subscribe(params => {
       this.loaiHTML = params['loaiHTML'] || '';
       this.doiTuongHTML = params['doiTuongHTML'] || '';

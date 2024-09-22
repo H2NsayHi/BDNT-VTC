@@ -72,15 +72,19 @@
               <td>{{ row.ketQua }}</td>
               <td>{{ row.doChinhXac }}</td>
               <td>
-                <img *ngFor="let image of row.anh" [src]="image" (click)="onImageClick(row)" alt="Image" style="width: 50px; height: auto; cursor: pointer;">
+                <img 
+                  src="./assets/images/image_icon.png" 
+                  alt="Image" 
+                  (click)="onImageClick(row)" 
+                  style="width: 24px; height: 24px; cursor: pointer;" /> <!-- Adjust width and height -->
               </td>
             </tr>
           </tbody>
         </table>
-        
       </c-card-body>
     </c-card>
   </c-col>
   <c-col xs="12" class="text-end">
     <button class="btn btn-primary" (click)="exportReport()">Xuất báo cáo</button>
   </c-col>
+</c-row>
